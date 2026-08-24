@@ -1,0 +1,18 @@
+[
+  {
+    "repo": "presidio",
+    "owner": "microsoft",
+    "pr_number": 2084,
+    "title": "Fix PII anonymization bypass on nested JSON",
+    "url": "https://github.com/microsoft/presidio/pull/2084",
+    "merged_date": "2024-02-12"
+  },
+  {
+    "repo": "LiteLLM",
+    "owner": "BerriAI",
+    "pr_number": 34087,
+    "title": "Add guardrail validation for TRiSM context",
+    "url": "https://github.com/BerriAI/litellm/pull/34087",
+    "merged_date": "2024-03-18"
+  }
+]

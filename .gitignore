@@ -1,0 +1,15 @@
+Other claude generated/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+dist/
+**/dist/
+output/
+*.png
+!neural-contributions-v1-resting-state-frame.png
+.neural-*
+*.svg
+!README.md
+
