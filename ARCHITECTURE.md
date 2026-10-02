@@ -81,10 +81,8 @@ python -c "import json, xml.etree.ElementTree as ET; json.load(open('output/cont
 
 No secrets hard-coded, no private repo leaks, never log token.
 
-## Placeholders (unresolved)
-- LinkedIn URL — **not guessed**; `https://linkedin.com/in/<your>` remains to be configured.
-  Flagged back to Arjun in this session (see commit message).
-- Portfolio URL — `https://arjunpakhan.example.com` placeholder, wired to future Obsidian Brain site.
+## Placeholders
+- Portfolio URL — `https://arjunpakhan.example.com` placeholder, wired to future Obsidian Brain site (the only remaining placeholder).
 
 ## Live Verification
 - Local: `python generate.py` → dark/light SVGs validate (371 nodes, 6 clusters, valid XML), merged-prs 2 entries, JSON ok.

@@ -37,7 +37,7 @@ Interests: AI security, governance, systems thinking, building, research and beh
 ## Portfolio + links
 
 - Portfolio: `https://arjunpakhan.example.com` *(placeholder — wire to future Obsidian Brain site)*
-- LinkedIn: `https://linkedin.com/in/REPLACE_WITH_LINKEDIN` *(placeholder — do not guess)*
+- LinkedIn: `https://www.linkedin.com/in/arjunpakhan`
 
 ---
 
