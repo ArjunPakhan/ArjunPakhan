@@ -88,8 +88,9 @@ No secrets hard-coded, no private repo leaks, never log token.
 
 ## Live Verification
 - Local: `python generate.py` → dark/light SVGs validate (371 nodes, 6 clusters, valid XML), merged-prs 2 entries, JSON ok.
-- Live GitHub: see RISKS.md risk-1 — SMIL `<animate>` preservation must be confirmed against the
-  rendered profile after pushing the `output` branch, not assumed from docs.
+- Live GitHub (2026-10-02): `output` branch pushed. `raw.githubusercontent.com/.../output/neural-grid-*.svg`
+  serves the full SMIL (486 `<animate>` per theme, `image/svg+xml`, CSP permits SMIL). See RISKS.md risk-1 —
+  resolved. Final pixel-level animation check remains a visual confirmation on github.com/ArjunPakhan.
 
 ## Portfolio Reuse
 Future site imports `output/contributions.json` + `output/neural-grid-*.svg` + `design/tokens.md` as a

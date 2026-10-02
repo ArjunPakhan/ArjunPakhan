@@ -2,8 +2,15 @@
 
 ## Risk 1: GitHub README Sanitizer and SMIL `<animate>` Elements
 
-**Status:** UNRESOLVED — verification in progress this session (push `output` branch, then confirm
-the rendered SVG preserves `<animate>`). Do not assume from docs.
+**Status:** RESOLVED — verified empirically 2026-10-02 against the live `output` branch.
+
+Result: GitHub serves the profile SVG directly from `raw.githubusercontent.com` (GitHub-hosted images
+are not camo-proxied or sanitized). The served bytes contain all `<animate>` elements (486 for dark,
+486 for light), `Content-Type: image/svg+xml`, and
+`Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox` — that CSP blocks
+scripts and external resources but NOT declarative SMIL animation. SMIL runs inside `<img>`, so the
+animation renders on the profile README. Final visual confirmation (pixels moving) is a human check
+on github.com/ArjunPakhan, but the technical gate is cleared.
 
 GitHub's README sanitizer may strip or modify SMIL `<animate>` elements when embedded via `<picture>`
 or `<img>` tags referencing a raw committed SVG file.
