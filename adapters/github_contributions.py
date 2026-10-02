@@ -31,11 +31,12 @@ def level_for_count(count: int) -> int:
 
 def load_sample(path: str = None) -> dict:
     if path is None:
-        # try neural/culture-v2 then neural/v1 then root
+        # try neural/node-grid (canonical) then the archived v1/v2 fixtures
         candidates = [
+            os.path.join(os.path.dirname(__file__), "..", "neural", "node-grid", "sample-contributions.json"),
             os.path.join(os.path.dirname(__file__), "..", "neural", "culture-v2", "sample-contributions.json"),
             os.path.join(os.path.dirname(__file__), "..", "neural", "v1", "sample-contributions.json"),
-            os.path.join(os.path.dirname(__file__), "..", "Other claude generated", "neural-culture-v2", "sample-contributions.json"),
+            "neural/node-grid/sample-contributions.json",
             "neural/culture-v2/sample-contributions.json",
             "sample-contributions.json",
         ]

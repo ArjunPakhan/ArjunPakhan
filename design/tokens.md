@@ -1,34 +1,27 @@
 # Design Tokens — Shared (GitHub Profile + Future Portfolio)
 
-Centralized palette from frozen V2.2 fluorescence culture. Used by `neural/culture-v2`, `output/*.svg`, and future portfolio (Obsidian Brain).
+Centralized palette from the canonical node-grid spec. Used by `neural/node-grid`, `output/*.svg`,
+and the future portfolio (Obsidian Brain).
 
 ## Backgrounds
-- `--bg-obsidian`: `#090A0F` (dark field, vignette `#17131f` → `#090A0F` radial 32% 38% r88%)
-- `--bg-light`: `#f4f2f8` / `#f6f7fb` (for light variant, keep same semantic colors with +15% opacity)
-- `--card-dark`: `#13141c` / `#090A0F` with `border #2a2f42`
-- `--card-light`: `#ffffff` `border #d9deeb`
+- `--bg-obsidian`: `#0b0c12` (obsidian — not pure black)
+- `--bg-light`: `#f4f3f8` (light variant; colors re-adjusted for contrast, not the dark values reused)
+- `--card-dark`: `#13141c` with `border #2a2f42`
+- `--card-light`: `#ffffff` with `border #d9deeb`
 
-## Neural Semantics (LOCKED)
-| Token | Value | Role |
-|-------|-------|------|
-| `COLOR_STRUCTURE_GREEN_DIM` | `#3E8F6A` | dendrite/axon rest, healthy tissue, dormant dendrites |
-| `COLOR_STRUCTURE_GREEN_BRIGHT` | `#5FBF8A` | accent on green, healthy resting neurons |
-| `COLOR_STRUCTURE_GREEN_DARK` | `#254636` | dormant soma `DORMANT_FILL` |
-| `COLOR_ACTIVE_CORAL_DIM` | `#B9575D` | active neuron base |
-| `COLOR_ACTIVE_CORAL_BRIGHT` | `#E87972` | firing peak |
-| `COLOR_ACTIVE_CORAL_GLOW` | `#f0a0a0` / `#FF9A94` L4 | bright coral + pale center |
-| `COLOR_PLASTICITY_DIM` | `#7059A6` | residual afterglow base |
-| `COLOR_PLASTICITY` | `#8D72C0` | strengthened pathway |
-| `COLOR_PLASTICITY_SOFT` | `#a99ad0` / `#d8c8ff` | discharge ring, pulse halo |
-| `COLOR_ELECTRICAL_WHITE` | `#F7F3FF` | pulse core (brightest) |
-| `COLOR_ELECTRICAL_CYAN` | `#EAF7F5` | pulse halo/trail stroke |
+## Neural Semantics (LOCKED — canonical spec)
+| Token | Dark | Light | Role |
+|-------|------|-------|------|
+| `COLOR_DORMANT` | `#3a3f4d` | `#a7adc3` | graphite/slate — dormant day |
+| `COLOR_FIRE` | `#d8f7ff` | `#0c9cc4` | warm cyan-white firing/peak flash |
+| `COLOR_RESTING` | `#8f5de0` | `#7c50c8` | plum — resting/strengthened state |
+| `COLOR_CLUSTER` | `#4b3a7a` | `#6a5ba0` | cluster-activation wash (low opacity, blurred) |
+| `COLOR_BREATH` | `#cbb8ff` | `#b6a3e6` | whole-grid resolution / breathing overlay (low opacity) |
 
-Lifecycle: `green (0.24-0.40 resting) → coral (0.88-1.0 firing) → white pulse (0.94) → violet (0.32-0.58 residual) → green`
+Resting fill is an interpolation of graphite → plum weighted by contribution intensity + recency.
 
-## Neurite
-- Axon: `0.85-1.55px` (tier3 `+14%`), tier1 green, tier3 violet, `floor 0.12-0.33`, `peak 0.44-0.88`
-- Dendrite: `0.48-1.15px`, green `0.9`, fork `0.68×`, grows `14-32%`
-- Soma: `4.2-7.4px`, halo `r*2.05`, growth `14-28`
+Lifecycle: `dormant (graphite) → firing (cyan-white flash) → resting (plum, brighter than dormant)`.
+Inactive days never fire; they stay dormant. This residual-trace "neuroplasticity" is the signature beat.
 
 ## Typography (direction)
 - Mono: `JetBrains Mono, ui-monospace` for PR strip / repo# / dates
@@ -36,10 +29,13 @@ Lifecycle: `green (0.24-0.40 resting) → coral (0.88-1.0 firing) → white puls
 - Profile copy stays editorial, no badge wall.
 
 ## Spacing / Glow
-- `MARGIN_X 48, MARGIN_Y 42, CELL_X 14.5`, `filter soft-blur 2.2 / soft-blur-lg 7`, `stroke-linecap round`, `rx 10-12`, `letter-spacing 0.8` for strip label.
+- Node grid: cell pitch `12`, gap `3`, margin `24`, base node radius `4.6`.
+- `filter blur-cluster 4` (cluster wash), `blur-overlay 8` (resolution/breathing).
+- Strip: `stroke-linecap round`, `rx 10-12`, `letter-spacing 0.8` for label.
 
 ## Usage
-- GitHub `output/` SVGs embed tokens via inline CSS; no external CSS.
-- Future portfolio imports same tokens via `design/tokens.json` (generate from this doc) to reuse neural assets without calling GitHub API.
+- GitHub `output/` SVGs embed tokens as inline SMIL/`fill` values; no external CSS.
+- Future portfolio imports the same tokens via `design/tokens.json` (generate from this doc) to reuse
+  the shared palette without calling the GitHub API.
 
-Do not invent new semantic colors; map any new state to green/coral/violet/white.
+Do not invent new semantic colors; map any new state to graphite / cyan-white / plum.

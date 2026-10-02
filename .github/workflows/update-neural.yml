@@ -1,13 +1,14 @@
-name: Update Neural Culture
+name: Update Neural Grid
 on:
   schedule:
-    - cron: "0 4 * * *"
-  workflow_dispatch:
+    - cron: "0 4 * * *"   # daily 04:00 UTC
+  workflow_dispatch:       # manual trigger
   push:
     branches: [main]
     paths:
-      - "neural/culture-v2/**"
+      - "neural/node-grid/**"
       - "adapters/**"
+      - "generators/**"
       - "generate.py"
       - "data/**"
 
@@ -24,9 +25,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
-      - run: pip install Pillow || true
-      - name: Generate neural culture (real data)
+      - name: Generate neural grid (real data)
         env:
           DATA_SOURCE: github
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,20 +36,20 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          mkdir -p /tmp/output
+          cp output/neural-grid-dark.svg output/neural-grid-light.svg \
+             output/merged-prs-dark.svg output/merged-prs-light.svg \
+             output/contributions.json /tmp/output/
+
           git fetch origin output || true
           if git rev-parse --verify origin/output >/dev/null 2>&1; then
-            git checkout output
+            git checkout -B output origin/output
           else
             git checkout --orphan output
-            git rm -rf . 2>/dev/null || true
-            touch .gitkeep; git add .; git commit -m "init output"
           fi
-          # copy only public assets
-          git checkout main -- output/neural-culture-dark.svg output/neural-culture-light.svg output/merged-prs-dark.svg output/merged-prs-light.svg output/contributions.json 2>/dev/null || cp ../output/* . 2>/dev/null || true
-          mkdir -p .
-          cp output/neural-culture-dark.svg ./ 2>/dev/null || cp ../output/neural-culture-dark.svg ./ 2>/dev/null || true
-          cp output/neural-culture-light.svg ./ 2>/dev/null || true
-          cp output/contributions.json ./ 2>/dev/null || true
-          git add neural-culture-dark.svg neural-culture-light.svg contributions.json 2>/dev/null || true
-          git diff --cached --quiet || git commit -m "neural: $(date -u +%Y-%m-%d)"
-          git push origin output || echo "push skipped (no output branch permission)"
+          git rm -rf . 2>/dev/null || true
+          cp /tmp/output/* .
+          git add .
+          git commit -m "neural: $(date -u +%Y-%m-%d)" || echo "no change to commit"
+          git push origin output

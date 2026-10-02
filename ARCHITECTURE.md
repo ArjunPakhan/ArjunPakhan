@@ -1,58 +1,77 @@
-# NeuroGit Architecture — V2.2 Frozen
+# NeuroGit Architecture — Node-Grid (canonical)
 
 ## Overview
-`REAL GITHUB DATA → adapters/github_contributions.py → normalized weeks[].days[] → neural/culture-v2 (frozen V2.2) → output/*.svg → README / portfolio`
+`REAL GITHUB DATA → adapters/github_contributions.py → normalized weeks[].days[] → neural/node-grid (SMIL) → output/*.svg → README`
 
-V1 (`neural/v1`, 858×152, 192e) kept as reference graph branch. V2 (`neural/culture-v2`, 880×420, ~35 neurons 56 axons, fluorescence) is the preferred artistic direction.
+The **node-grid** generator (`neural/node-grid/`) is the single canonical output. It renders the
+contribution calendar as a 53×7 circle grid with a per-node lifecycle
+(dormant → activation → firing → afterglow → resting), using static SMIL
+`<animate>` elements (no JS/WebGL/CSS — the only thing a GitHub README can animate).
+
+**Archived (reference only, not deleted, not wired to anything):**
+- `neural/v1/` — node-grid with edges, CSS `@keyframes`, 24s cycle.
+- `neural/culture-v2/` — fluorescence "cultured neurons" (dendrites/axons/soma), CSS `@keyframes`.
+
+Both predate the canonical spec and diverged from it (palette + structure + rendering tech).
+Do not regenerate, wire, or extend them; the canonical path is `neural/node-grid/`.
 
 ## Repository Tree
 ```
 /
-├── README.md
-├── adapters/github_contributions.py
-├── data/merged-prs.json
+├── README.md                          # points at output/neural-grid-{dark,light}.svg
+├── adapters/github_contributions.py   # data pull (reused; not visual-direction-dependent)
+├── data/merged-prs.json               # hand-curated, verified-merged PRs only
 ├── design/tokens.md
-├── generate.py                     # unified pipeline (sample/github → dark/light)
-├── generators/merged_prs.py
+├── generate.py                        # unified pipeline (sample/github → dark/light)
+├── generators/merged_prs.py           # merged-PR strip (reused)
 ├── neural/
-│   ├── v1/ (frozen python + generate-svg.js legacy)
-│   └── culture-v2/ (data.py, culture_model.py, culture_keyframes.py, build_culture_svg.py, render_culture_preview.py, ARCHITECTURE.md, sample-contributions.json)
-├── output/
-│   ├── neural-culture-dark.svg
-│   ├── neural-culture-light.svg
+│   ├── node-grid/                     # ★ CANONICAL — SMIL node grid
+│   │   ├── model.py                   #   palette, timing, geometry, lifecycle params
+│   │   ├── build_svg.py               #   SMIL <animate> emission (dark + light)
+│   │   └── sample-contributions.json
+│   ├── v1/                            # ARCHIVED reference
+│   └── culture-v2/                    # ARCHIVED reference
+├── output/                            # committed to `output` branch
+│   ├── neural-grid-dark.svg
+│   ├── neural-grid-light.svg
 │   ├── merged-prs-dark.svg
 │   ├── merged-prs-light.svg
 │   └── contributions.json
-└── .github/workflows/update-neural.yml + update-profile-assets.yml
+└── .github/workflows/update-neural.yml
 ```
 
 ## Data Pipeline
-1. `DATA_SOURCE=sample` → loads `neural/culture-v2/sample-contributions.json`
-   `DATA_SOURCE=github` → `GITHUB_TOKEN` + `GITHUB_USERNAME` → GraphQL `contributionCalendar` → `level_map NONE/QUARTILE → 0-4` → normalized 53×7
-2. `adapters.validate` ensures 53×7, weekday 0-6, level 0-4
-3. `culture_model.build` generates soma/dendrites/axons + firing delays + tiers + growth windows
-4. `build_culture_svg` emits CSS `@keyframes` (soma/halo/axon/dendrite/cluster/discharge/pulse) dark/light variants (same geometry)
-5. `generators/merged_prs` templats hand-curated `data/merged-prs.json` → synapse strip SVGs
-6. Commit to `output` branch, README `<picture>` switches `neural-culture-dark/light.svg` via `#gh-dark-mode-only`
+1. `DATA_SOURCE=sample` → `neural/node-grid/sample-contributions.json`;
+   `DATA_SOURCE=github` → `GITHUB_TOKEN` + `GITHUB_USERNAME` → GraphQL `contributionCalendar` → level 0–4 → normalized 53×7.
+2. `adapters.validate` ensures 53 weeks × 7 days, weekday 0–6, level 0–4.
+3. `model.build_model` computes per-node grid position, intensity (0–4), recency, activation time,
+   peak/resting opacity, resting color (graphite→plum), fire radius, and dense-week clusters.
+4. `build_svg.render_svg` emits SMIL `<animate>` (opacity lifecycle, fill flash, radius, cluster wash,
+   resolution+breathing overlay) for dark and light variants (same geometry, re-adjusted palette).
+5. `generators.merged_prs` renders `data/merged-prs.json` → PR strip SVGs (verified-merged only).
+6. Workflow commits everything to the `output` branch; README `<picture>` switches dark/light.
 
-## Files Created/Modified
-Created: `neural/`, `adapters/github_contributions.py`, `data/merged-prs.json`, `generators/merged_prs.py`, `generate.py`, `output/`, `.github/workflows/update-neural.yml`, `.github/workflows/update-profile-assets.yml`, `design/tokens.md`, `ARCHITECTURE.md`. Preserved: `neural/culture-v2` (frozen), `neural/v1` (frozen), `generate-svg.js` legacy.
+## Cycle (locked to spec)
+`DORMANT → INTRO → NEURAL PROPAGATION → CLUSTER ACTIVATION → PRESENT DAY → WHOLE-NETWORK RESOLUTION → RESTING STATE (2 breathing pulses) → PAUSE → fade to black → LOOP` — 14s total.
+The resting-state glow (brighter than dormant, weighted by intensity + recency) is the signature
+neuroplasticity beat; inactive days stay dormant and never fire.
 
 ## Workflows
-- `update-neural.yml`: `cron 4AM UTC` + `workflow_dispatch` + `push` on `neural/culture-v2/**, adapters/**`. Setup Python 3.12, `pip install Pillow`, `DATA_SOURCE=github GITHUB_TOKEN secrets.GITHUB_TOKEN python generate.py --real`, deploy to `output` branch only if changed (`git diff --cached --quiet || commit`). Least privilege `contents: write`.
-- `update-profile-assets.yml`: on `data/merged-prs.json` push → regenerates strip.
+- `update-neural.yml` (only workflow): `cron 4AM UTC` + `workflow_dispatch` + `push` on
+  `neural/node-grid/**, adapters/**, generators/**, generate.py, data/**`.
+  Python 3.12, no pip deps (stdlib only), `DATA_SOURCE=github GITHUB_TOKEN=secrets.GITHUB_TOKEN
+  python generate.py --real`, deploy to `output` branch. Least privilege `contents: write`.
+- Removed: `neural-pulse.yml` (stale Node.js `generate-svg.js` that no longer exists) and
+  `update-profile-assets.yml` (redundant — the canonical workflow already regenerates merged-prs
+  on `data/**` changes, and it committed to the wrong branch).
 
 ## Local Commands
 ```bash
-# sample render
-python generate.py
-# real GitHub
-DATA_SOURCE=github GITHUB_USERNAME=ArjunPakhan GITHUB_TOKEN=ghp_xxx python generate.py --real
-python generate.py --gif   # also 60f GIF
-python adapters/github_contributions.py --source sample --out /tmp/test.json
+python generate.py                                              # sample render
+DATA_SOURCE=github GITHUB_USERNAME=ArjunPakhan python generate.py --real
 python -m generators.merged_prs
 # validate
-python -c "import json, xml.etree.ElementTree as ET; json.load(open('output/contributions.json')); ET.parse('output/neural-culture-dark.svg')"
+python -c "import json, xml.etree.ElementTree as ET; json.load(open('output/contributions.json')); [ET.parse(f'output/neural-grid-{t}.svg') for t in ('dark','light')]"
 ```
 
 ## Env Vars
@@ -63,12 +82,15 @@ python -c "import json, xml.etree.ElementTree as ET; json.load(open('output/cont
 No secrets hard-coded, no private repo leaks, never log token.
 
 ## Placeholders (unresolved)
-- `README.md` now points to `ArjunPakhan/ArjunPakhan` — verify repository is renamed to `ArjunPakhan/ArjunPakhan` for profile README.
-- LinkedIn URL — not guessed; `https://linkedin.com/in/<your>` remains to be configured before live push.
+- LinkedIn URL — **not guessed**; `https://linkedin.com/in/<your>` remains to be configured.
+  Flagged back to Arjun in this session (see commit message).
+- Portfolio URL — `https://arjunpakhan.example.com` placeholder, wired to future Obsidian Brain site.
 
-## Live Verification (status: local only)
-- Local: `python generate.py` → dark/light SVGs validate, 35n 56ax, merged-prs 2 entries, JSON ok.
-- Live GitHub: **pending** — needs push to `output` branch and profile repo rename; dark/light `<picture>` and PR strip URLs not yet live-verified.
+## Live Verification
+- Local: `python generate.py` → dark/light SVGs validate (371 nodes, 6 clusters, valid XML), merged-prs 2 entries, JSON ok.
+- Live GitHub: see RISKS.md risk-1 — SMIL `<animate>` preservation must be confirmed against the
+  rendered profile after pushing the `output` branch, not assumed from docs.
 
 ## Portfolio Reuse
-Future site imports `output/contributions.json` + `output/neural-culture-*.svg` + `design/tokens.md` as shared data layer — no direct GitHub API coupling. `SHARED DATA LAYER → GitHub README (editorial) + Portfolio (interactive + Obsidian Brain)`; neural assets reusable statically, culture growth/pulse logic portable without re-fetching.
+Future site imports `output/contributions.json` + `output/neural-grid-*.svg` + `design/tokens.md` as a
+shared data layer — no direct GitHub API coupling. `SHARED DATA LAYER → GitHub README (editorial) + Portfolio (interactive + Obsidian Brain)`.
