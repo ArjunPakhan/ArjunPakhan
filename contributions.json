@@ -3,52 +3,6 @@
     {
       "days": [
         {
-          "date": "2025-09-28",
-          "weekday": 0,
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2025-09-29",
-          "weekday": 1,
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2025-09-30",
-          "weekday": 2,
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2025-10-01",
-          "weekday": 3,
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2025-10-02",
-          "weekday": 4,
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2025-10-03",
-          "weekday": 5,
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2025-10-04",
-          "weekday": 6,
-          "count": 0,
-          "level": 0
-        }
-      ]
-    },
-    {
-      "days": [
-        {
           "date": "2025-10-05",
           "weekday": 0,
           "count": 0,
@@ -2432,6 +2386,52 @@
         },
         {
           "date": "2026-10-03",
+          "weekday": 6,
+          "count": 0,
+          "level": 0
+        }
+      ]
+    },
+    {
+      "days": [
+        {
+          "date": "2026-10-04",
+          "weekday": 0,
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2026-10-05",
+          "weekday": 1,
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2026-10-06",
+          "weekday": 2,
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2026-10-07",
+          "weekday": 3,
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2026-10-08",
+          "weekday": 4,
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2026-10-09",
+          "weekday": 5,
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2026-10-10",
           "weekday": 6,
           "count": 0,
           "level": 0
