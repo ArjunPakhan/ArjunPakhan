@@ -2397,14 +2397,14 @@
         {
           "date": "2026-10-18",
           "weekday": 0,
-          "count": 0,
-          "level": 0
+          "count": 4,
+          "level": 4
         },
         {
           "date": "2026-10-19",
           "weekday": 1,
-          "count": 0,
-          "level": 0
+          "count": 1,
+          "level": 1
         },
         {
           "date": "2026-10-20",
