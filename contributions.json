@@ -2403,14 +2403,14 @@
         {
           "date": "2026-10-19",
           "weekday": 1,
-          "count": 1,
-          "level": 1
+          "count": 3,
+          "level": 3
         },
         {
           "date": "2026-10-20",
           "weekday": 2,
-          "count": 0,
-          "level": 0
+          "count": 3,
+          "level": 3
         },
         {
           "date": "2026-10-21",
