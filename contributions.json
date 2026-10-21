@@ -2409,14 +2409,14 @@
         {
           "date": "2026-10-20",
           "weekday": 2,
-          "count": 3,
-          "level": 3
+          "count": 6,
+          "level": 4
         },
         {
           "date": "2026-10-21",
           "weekday": 3,
-          "count": 0,
-          "level": 0
+          "count": 1,
+          "level": 1
         },
         {
           "date": "2026-10-22",
